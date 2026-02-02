@@ -58,7 +58,7 @@ Verified, standardized directory layout ensuring separation of concerns.
 | 🛣️ `driver` | `com.salesforce.driver` | **DriverFactory**: Thread-safe (ThreadLocal) WebDriver management. |
 | 🧱 `base` | `com.salesforce.base` | **BasePage**: Wraps Selenium actions.<br>**BaseTest**: Manages test lifecycle (setup/teardown). |
 | 📄 `pages` | `com.salesforce.pages` | **Page Objects**: Contains locators and page-specific logic (e.g., `LoginPage`). |
-| 🛠️ `utils` | `com.salesforce.utils` | **ConfigReader**: Enivronment properties loader.<br>**WaitUtils**: Explicit wait helpers.<br>**LoggerUtils**: Log4j2 wrapper.<br>**ScreenshotUtils**: Failure capture. |
+| 🛠️ `utils` | `com.salesforce.utils` | **ConfigReader**: Enivronment properties loader.<br>**ExtentReportManager**: Timestamped report generation.<br>**WaitUtils**: Explicit wait helpers.<br>**LoggerUtils**: Log4j2 wrapper.<br>**ScreenshotUtils**: Failure capture. |
 | 🧪 `tests` | `com.salesforce.tests` | **Test Classes**: Actual TestNG test scenarios. |
 | ⚙️ `resources`| `src/main/resources` | **Config**: `qa.properties`, `uat.properties`...<br>**Suites**: `testng.xml`. |
 
@@ -70,6 +70,7 @@ Verified, standardized directory layout ensuring separation of concerns.
 - **🌍 Multi-Environment Support**: Seamlessly switch between **QA**, **UAT**, and **PROD** by changing a single flag.
 - **🛡️ Robust Synchronization**: No basic `Thread.sleep()`. All interactions use `WaitUtils` for reliable explicit waits.
 - **📊 Rich Reporting**: Integrated **ExtentReports** with automatic screenshot attachment on failure.
+- **🕒 Preservation**: Reports are saved in timestamped folders (e.g., `reports/2026-02-02_23-00-00/`) to prevent overwriting history.
 - **📝 Detailed Logging**: Context-aware logging using Log4j2 for easier debugging.
 
 ---
@@ -91,8 +92,8 @@ mvn clean test -Denv=prod
 ```
 
 ### 3️⃣ View Reports
-After execution, robust HTML reports are generated:
-- 📂 **Path**: `reports/Automation_Report.html`
+After execution, robust HTML reports are generated in a timestamped folder:
+- 📂 **Path**: `reports/yyyy-MM-dd_HH-mm-ss/TestExecutionReport_....html`
 
 ---
 
