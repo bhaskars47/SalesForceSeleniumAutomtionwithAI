@@ -18,15 +18,17 @@ public class ScreenshotUtils {
             return null;
 
         File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String path = System.getProperty("user.dir") + "/reports/screenshots/" + testName + "_" + timestamp + ".png";
+
+        // Use the centralized dynamic path from ExtentReportManager
+        String destinationPath = ExtentReportManager.getScreenshotPath() + testName + ".png";
 
         try {
-            FileUtils.copyFile(src, new File(path));
+            FileUtils.copyFile(src, new File(destinationPath));
+            return destinationPath;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return path;
     }
 
     public static String getBase64Image() {

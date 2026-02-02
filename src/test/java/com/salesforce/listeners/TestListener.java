@@ -10,6 +10,7 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.salesforce.constants.FrameworkConstants;
 import com.salesforce.utils.LoggerUtils;
 import com.salesforce.utils.ScreenshotUtils;
+import com.salesforce.utils.ExtentReportManager;
 
 public class TestListener implements ITestListener {
 
@@ -18,17 +19,8 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onStart(ITestContext context) {
-        if (extent == null) {
-            ExtentSparkReporter htmlReporter = new ExtentSparkReporter(
-                    FrameworkConstants.EXTENT_REPORT_FOLDER_PATH + FrameworkConstants.EXTENT_REPORT_NAME);
-            htmlReporter.config().setDocumentTitle("Automation Test Report");
-            htmlReporter.config().setReportName("Salesforce Automation Report");
-
-            extent = new ExtentReports();
-            extent.attachReporter(htmlReporter);
-            extent.setSystemInfo("OS", System.getProperty("os.name"));
-            extent.setSystemInfo("Java Version", System.getProperty("java.version"));
-        }
+        // Initialize the report manager (creates folders and timestamp)
+        extent = ExtentReportManager.getExtentReports();
         LoggerUtils.info("Test Suite Started: " + context.getName());
     }
 
