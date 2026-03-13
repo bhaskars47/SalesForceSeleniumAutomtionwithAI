@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import com.salesforce.utils.WaitUtils;
 import com.salesforce.utils.LoggerUtils;
+import com.salesforce.utils.rag.SelfHealingUtils;
+import org.openqa.selenium.TimeoutException;
 
 public class BasePage {
 
@@ -11,9 +13,21 @@ public class BasePage {
         try {
             WaitUtils.waitForClickability(locator).click();
             LoggerUtils.info("Clicked on: " + elementName);
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to click on: " + elementName);
-            throw e;
+        } catch (TimeoutException e) {
+            LoggerUtils.error("Failed to click on: " + elementName + ". Attempting Self-Healing...");
+            LoggerUtils.info("Calling getPageSource()...");
+            String pageSource = com.salesforce.driver.DriverFactory.getDriver().getPageSource();
+            LoggerUtils.info("getPageSource() completed. Calling healLocator()...");
+            By newLocator = SelfHealingUtils.healLocator(elementName, locator, pageSource);
+            LoggerUtils.info("healLocator() returned: " + newLocator);
+
+            if (newLocator != null) {
+                LoggerUtils.info("Retrying click with new locator: " + newLocator);
+                WaitUtils.waitForClickability(newLocator).click();
+                LoggerUtils.info("Self-Healing successful! Clicked on: " + elementName);
+            } else {
+                throw e; // Throw original if healing fails
+            }
         }
     }
 
@@ -23,9 +37,23 @@ public class BasePage {
             element.clear();
             element.sendKeys(text);
             LoggerUtils.info("Entered text in: " + elementName);
-        } catch (Exception e) {
-            LoggerUtils.error("Failed to enter text in: " + elementName);
-            throw e;
+        } catch (TimeoutException e) {
+            LoggerUtils.error("Failed to enter text in: " + elementName + ". Attempting Self-Healing...");
+            LoggerUtils.info("Calling getPageSource()...");
+            String pageSource = com.salesforce.driver.DriverFactory.getDriver().getPageSource();
+            LoggerUtils.info("getPageSource() completed. Calling healLocator()...");
+            By newLocator = SelfHealingUtils.healLocator(elementName, locator, pageSource);
+            LoggerUtils.info("healLocator() returned: " + newLocator);
+
+            if (newLocator != null) {
+                LoggerUtils.info("Retrying sendKeys with new locator: " + newLocator);
+                WebElement element = WaitUtils.waitForVisibility(newLocator);
+                element.clear();
+                element.sendKeys(text);
+                LoggerUtils.info("Self-Healing successful! Entered text in: " + elementName);
+            } else {
+                throw e;
+            }
         }
     }
 
@@ -36,8 +64,16 @@ public class BasePage {
     protected boolean isDisplayed(By locator, String elementName) {
         try {
             return WaitUtils.waitForVisibility(locator).isDisplayed();
+        } catch (TimeoutException e) {
+            LoggerUtils.error("Element not displayed: " + elementName + ". Attempting Self-Healing...");
+            LoggerUtils.info("Calling getPageSource()...");
+            String pageSource = com.salesforce.driver.DriverFactory.getDriver().getPageSource();
+            LoggerUtils.info("getPageSource() completed. Calling healLocator()...");
+            By newLocator = SelfHealingUtils.healLocator(elementName, locator, pageSource);
+            LoggerUtils.info("healLocator() returned: " + newLocator);
+
+            return newLocator != null && WaitUtils.waitForVisibility(newLocator).isDisplayed();
         } catch (Exception e) {
-            LoggerUtils.error("Element not displayed: " + elementName);
             return false;
         }
     }

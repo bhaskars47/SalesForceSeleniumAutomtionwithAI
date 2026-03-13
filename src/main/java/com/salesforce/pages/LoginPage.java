@@ -5,7 +5,7 @@ import com.salesforce.base.BasePage;
 
 public class LoginPage extends BasePage {
 
-    private final By usernameField = By.id("username");
+    private final By usernameField = By.id("username_BROKEN_LOCATOR"); // Intentionally broken to test Self-Healing
     private final By passwordField = By.id("password");
     private final By loginButton = By.id("Login");
     private final By errorMessage = By.id("error");

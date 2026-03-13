@@ -5,6 +5,8 @@
 ![TestNG](https://img.shields.io/badge/TestNG-7.x-FF7F00?style=for-the-badge&logo=testng&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![ExtentReports](https://img.shields.io/badge/Reporting-ExtentReports-blue?style=for-the-badge)
+![LangChain4j](https://img.shields.io/badge/AI-LangChain4j-000000?style=for-the-badge&logo=openai&logoColor=white)
+![Ollama](https://img.shields.io/badge/Local_LLM-Ollama-white?style=for-the-badge&logo=ollama&logoColor=black)
 
 > **An enterprise-grade, scalable test automation framework for Salesforce.**
 > Built with a focus on modularity, thread-safety, and maintainability using the Page Object Model (POM) design pattern.
@@ -66,6 +68,7 @@ Verified, standardized directory layout ensuring separation of concerns.
 
 ## ⚡ Key Features
 
+- **🤖 AI-Powered Self-Healing** (NEW): Dynamically heals broken locators at runtime using a local **Llama 3.2** LLM, minified DOM extraction with **Jsoup**, and **LangChain4j**, providing 100% data privacy and lightning-fast auto-recovery.
 - **🧵 Parallel Execution**: Usage of `ThreadLocal<WebDriver>` ensures safe parallel test execution across multiple threads.
 - **🌍 Multi-Environment Support**: Seamlessly switch between **QA**, **UAT**, and **PROD** by changing a single flag.
 - **🛡️ Robust Synchronization**: No basic `Thread.sleep()`. All interactions use `WaitUtils` for reliable explicit waits.
@@ -102,6 +105,8 @@ After execution, robust HTML reports are generated in a timestamped folder:
 - **Language**: Java 16+
 - **Web Automation**: Selenium WebDriver 4.40.0
 - **Test Runner**: TestNG 7.12.0
+- **AI Integration**: LangChain4j 0.30.0 & Ollama (Llama 3.2)
+- **DOM Parsing**: Jsoup 1.16.1
 - **Build Tool**: Maven
 - **Reporting**: ExtentReports 5.1.1
 - **Logging**: Log4j2
