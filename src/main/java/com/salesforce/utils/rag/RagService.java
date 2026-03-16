@@ -7,6 +7,7 @@ import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 
 import java.time.Duration;
@@ -18,6 +19,12 @@ public class RagService {
 
     // Define the interface that LangChain4j will implement
     interface Assistant {
+        @SystemMessage({
+                "You are a helpful assistant for Salesforce Automation engineers.",
+                "Your answers must be BASED ONLY on the provided documentation context.",
+                "If the answer is not in the documentation, state that you do not know.",
+                "DO NOT hallucinate or make up facts that are not explicitly mentioned in the provided chunks."
+        })
         String answer(String query);
     }
 

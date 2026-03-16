@@ -8,3 +8,5 @@ logs/
 .settings/
 .classpath
 .project
+*.class
+*.log
